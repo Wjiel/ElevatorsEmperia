@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186691fcce2d1af41a0764f2ff67b49d, type: 3}
+  m_Name: FlatPoly Floating Islands
+  m_EditorClassIdentifier: 
+  orbitSpeed: 1
+  zoomSpeed: 1
+  panSpeed: 1
+  autoOrbitSpeed: 0
+  autoZoomSpeed: 0
+  autoHorizontalPanSpeed: 0
+  autoVerticalPanSpeed: 0
+  originDistance: 1
+  originReference: {fileID: 0}

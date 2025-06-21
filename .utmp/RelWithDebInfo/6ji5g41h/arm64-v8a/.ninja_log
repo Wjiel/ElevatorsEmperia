@@ -1,0 +1,10 @@
+# ninja log v5
+88	11951	7718549519554120	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	24a58988457760ba
+106	12104	7718549520441607	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	7297c6fd6e402db2
+126	12267	7718549522175093	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	72fbff4ea2933111
+54	12325	7718549521905009	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	a967443b4363993a
+1	13048	7718549526787494	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	8e69a28f0c0b0117
+69	14400	7718549542555040	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	571e4b118815a424
+37	14729	7718549548784924	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	2e59874619cabd47
+153	15183	7718549552662689	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	4329ecf4340d1454
+15188	16187	7718549563422633	C:/Users/viktor/Documents/game_project/ElevatorsEmperia/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6ji5g41h/obj/arm64-v8a/libgame.so	df739188b40c2a7e

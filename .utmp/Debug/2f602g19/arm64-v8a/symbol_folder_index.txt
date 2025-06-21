@@ -1,0 +1,1 @@
+C:\Users\viktor\Documents\game_project\ElevatorsEmperia\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\Debug\2f602g19\obj\arm64-v8a

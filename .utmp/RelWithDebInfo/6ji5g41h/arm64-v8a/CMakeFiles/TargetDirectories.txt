@@ -1,0 +1,5 @@
+C:/Users/viktor/Documents/game_project/ElevatorsEmperia/.utmp/RelWithDebInfo/6ji5g41h/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/viktor/Documents/game_project/ElevatorsEmperia/.utmp/RelWithDebInfo/6ji5g41h/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/Users/viktor/Documents/game_project/ElevatorsEmperia/.utmp/RelWithDebInfo/6ji5g41h/arm64-v8a/GameActivity/CMakeFiles/game.dir
+C:/Users/viktor/Documents/game_project/ElevatorsEmperia/.utmp/RelWithDebInfo/6ji5g41h/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+C:/Users/viktor/Documents/game_project/ElevatorsEmperia/.utmp/RelWithDebInfo/6ji5g41h/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
