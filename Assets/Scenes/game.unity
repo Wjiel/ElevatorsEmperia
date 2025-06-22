@@ -1579,7 +1579,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -55.24713, y: 0}
+  m_AnchoredPosition: {x: -55.247192, y: 0}
   m_SizeDelta: {x: -290.9553, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &64996653 stripped
@@ -2265,7 +2265,7 @@ MonoBehaviour:
   _manager: {fileID: 1412541356}
   _moneyManager: {fileID: 1412541358}
   displayCurrentCoins: {fileID: 2016078325}
-  panelTextCurrCoints: {fileID: 0}
+  displayCurrentCountCoins: []
   liftPrice: 0
   liftCointReturn: 5
   liftIsOwned: 0
@@ -7072,8 +7072,6 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  - component: {fileID: 330585548}
-  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7199,39 +7197,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &330585548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 186691fcce2d1af41a0764f2ff67b49d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orbitSpeed: 3
-  zoomSpeed: 0.8
-  originDistance: 186.30977
-  originReference: {fileID: 403591167}
---- !u!114 &330585549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90f15295c67070c46b6c5277700f1194, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCamera: {fileID: 330585545}
-  interactionLayer:
-    serializedVersion: 2
-    m_Bits: 65
-  interactionRange: 400
 --- !u!4 &334526468 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4135480120554540, guid: f24cfa7ea7c5c764dad9dddadf04cde2, type: 3}
@@ -10320,7 +10285,7 @@ GameObject:
   - component: {fileID: 422201548}
   - component: {fileID: 422201547}
   m_Layer: 5
-  m_Name: Button
+  m_Name: BuyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12332,7 +12297,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -6.00177, y: -400}
+  m_AnchoredPosition: {x: -6.001709, y: -400}
   m_SizeDelta: {x: -138.3568, y: 99.7304}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &529465226
@@ -21834,7 +21799,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -55.329163, y: 0}
+  m_AnchoredPosition: {x: -55.3291, y: 0}
   m_SizeDelta: {x: -291.0404, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1083838707
@@ -27305,6 +27270,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1989386505}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
 --- !u!114 &1362661929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27691,7 +27668,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1412541356
 MonoBehaviour:
@@ -27706,20 +27683,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyManager: {fileID: 1412541358}
+  Controller: {fileID: 1989386505}
   panel: {fileID: 492595478}
   panelInfo: {fileID: 246064057}
-  liftPriceText: {fileID: 1963048885}
+  liftPriceText:
+  - {fileID: 1963048885}
+  - {fileID: 964615598}
+  - {fileID: 1545489468}
   liftText: {fileID: 768892085}
-  liftNameText: {fileID: 1840177379}
-  liftNameText1: {fileID: 1917684254}
-  liftPriceText1: {fileID: 2096069473}
+  liftNameText:
+  - {fileID: 1840177379}
+  - {fileID: 1917684254}
+  liftProfitabilityText: {fileID: 2096069473}
   liftWearResistanceText: {fileID: 1914316626}
   liftReliabilityText: {fileID: 1212518687}
   liftConvenienceText: {fileID: 1825078531}
-  liftCollectText: {fileID: 1545489468}
-  liftPriceTextInfo: {fileID: 964615598}
-  Bts: {fileID: 422201544}
-  BtBuy: {fileID: 1662939972}
+  Bts: {fileID: 1662939972}
+  BtBuy: {fileID: 422201544}
 --- !u!4 &1412541357
 Transform:
   m_ObjectHideFlags: 0
@@ -31595,7 +31575,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 56.120197, y: -18.15255}
+  m_AnchoredPosition: {x: 56.12024, y: -18.15255}
   m_SizeDelta: {x: 112.240395, y: 36.3051}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1598844147
@@ -32209,7 +32189,7 @@ MonoBehaviour:
   _manager: {fileID: 1412541356}
   _moneyManager: {fileID: 1412541358}
   displayCurrentCoins: {fileID: 0}
-  panelTextCurrCoints: {fileID: 0}
+  displayCurrentCountCoins: []
   liftPrice: 0
   liftCointReturn: 0
   liftIsOwned: 0
@@ -32632,7 +32612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -55.24713, y: 0}
+  m_AnchoredPosition: {x: -55.247192, y: 0}
   m_SizeDelta: {x: -290.9553, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1643202735
@@ -33176,7 +33156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -6.000183, y: 200}
+  m_AnchoredPosition: {x: -6.000244, y: 200}
   m_SizeDelta: {x: -138.36, y: 152.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1663148592
@@ -38188,7 +38168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 19.873596, y: -206.59998}
+  m_AnchoredPosition: {x: 19.873535, y: -206.59998}
   m_SizeDelta: {x: -119.2292, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1885025768 stripped
@@ -40775,6 +40755,73 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1987771299}
   m_CullTransparentMesh: 1
+--- !u!1 &1989386505
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1989386508}
+  - component: {fileID: 1989386506}
+  - component: {fileID: 1989386509}
+  m_Layer: 0
+  m_Name: ===Controller===
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!114 &1989386506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989386505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90f15295c67070c46b6c5277700f1194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 330585545}
+  orbitCamera: {fileID: 0}
+  interactionLayer:
+    serializedVersion: 2
+    m_Bits: 65
+  interactionRange: 400
+--- !u!4 &1989386508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989386505}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1989386509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989386505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186691fcce2d1af41a0764f2ff67b49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbitSpeed: 2.5
+  zoomSpeed: 0.8
+  originDistance: 0
+  originReference: {fileID: 403591167}
 --- !u!1001 &1989484126
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42083,7 +42130,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -55.24713, y: 0}
+  m_AnchoredPosition: {x: -55.247192, y: 0}
   m_SizeDelta: {x: -290.9553, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2060422328
@@ -43881,3 +43928,4 @@ SceneRoots:
   - {fileID: 373565603}
   - {fileID: 1790303841}
   - {fileID: 1412541357}
+  - {fileID: 1989386508}

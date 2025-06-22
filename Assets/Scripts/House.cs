@@ -9,9 +9,7 @@ public class House : MonoBehaviour, IInteractable
     [SerializeField] private MoneyManager _moneyManager;
 
     [SerializeField] private GameObject displayCurrentCoins;
-    public TextMeshProUGUI panelTextCurrCoints;
-
-
+    public TextMeshProUGUI[] displayCurrentCountCoins;
 
 
     public int liftPrice;
@@ -39,9 +37,13 @@ public class House : MonoBehaviour, IInteractable
         _moneyManager.ModifyCoins(currentCoins);
 
         currentCoins = 0;
-        displayCurrentCoins.SetActive(false);
 
-        panelTextCurrCoints.text = 0.ToString();
+        displayCurrentCoins.transform.DOScale(0, 0.2f)
+           .SetEase(Ease.OutBounce)
+           .OnComplete(() => displayCurrentCoins.SetActive(false));
+
+        for (int i = 0; i < displayCurrentCountCoins.Length; i++)
+            displayCurrentCountCoins[i].text = "0";
     }
 
     public void IsOwning()
@@ -49,14 +51,20 @@ public class House : MonoBehaviour, IInteractable
         StartCoroutine(AddCurrencyCoroutine());
     }
 
-    IEnumerator AddCurrencyCoroutine()
+    private IEnumerator AddCurrencyCoroutine()
     {
         while (true)
         {
             currentCoins += liftCointReturn;
+
             displayCurrentCoins.SetActive(true);
 
-            panelTextCurrCoints.text = currentCoins.ToString();
+            displayCurrentCoins.transform.localScale = Vector3.zero;
+            displayCurrentCoins.transform.DOScale(1, 0.2f)
+                .SetEase(Ease.InBounce);
+
+            for (int i = 0; i < displayCurrentCountCoins.Length; i++)
+                displayCurrentCountCoins[i].text = currentCoins.ToString();
 
             yield return new WaitForSeconds(interval);
         }

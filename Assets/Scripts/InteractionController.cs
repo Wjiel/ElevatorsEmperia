@@ -1,47 +1,48 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InteractionController : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private OrbitZoomPanCamera orbitCamera;
     [SerializeField] private LayerMask interactionLayer;
-    [SerializeField] private float interactionRange = 100f;
+    [SerializeField] private float interactionRange = 100f; 
 
-    private float intr = 0;
 
-    private void Update()
+    void Update()
     {
         HandleInput();
     }
 
-    private void HandleInput()
+    void HandleInput()
     {
-        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+
+        if (orbitCamera.IsMoving || IsPointerOverUI())
             return;
+
+
 
         if (Input.touchCount == 1)
         {
-            Vector2 screenPosition = Input.mousePosition;
+            Touch touch = Input.GetTouch(0);
 
-            intr += Time.deltaTime;
-
-
-            if (Input.GetMouseButtonUp(0) && Input.touchCount == 1)
+            if (touch.phase == TouchPhase.Ended)
             {
-                if (intr < 0.2f)
-                {
-                    PerformInteraction(screenPosition);
-                }
-                intr = 0;
+                PerformInteraction(touch.position);
             }
         }
     }
 
-    private void PerformInteraction(Vector2 screenPosition)
+    bool IsPointerOverUI()
+    {
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+    }
+
+    void PerformInteraction(Vector2 screenPosition)
     {
         Ray ray = mainCamera.ScreenPointToRay(screenPosition);
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactionRange, interactionLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, interactionRange, interactionLayer))
         {
             if (hit.transform.TryGetComponent(out IInteractable interactable))
             {

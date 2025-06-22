@@ -4,25 +4,24 @@ using UnityEngine;
 public class HouseManager : MonoBehaviour
 {
     [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private GameObject Controller;
 
     [SerializeField] private GameObject panel;
 
     [SerializeField] private GameObject panelInfo;
+    [Header("House info")]
 
-    [SerializeField] private TextMeshProUGUI liftPriceText;
+    [SerializeField] private TextMeshProUGUI[] liftPriceText;
 
     [SerializeField] private TextMeshProUGUI liftText;
 
-    [SerializeField] private TextMeshProUGUI liftNameText;
+    [SerializeField] private TextMeshProUGUI[] liftNameText;
 
     [Header("Lift info")]
-    [SerializeField] private TextMeshProUGUI liftNameText1;
-    [SerializeField] private TextMeshProUGUI liftPriceText1;
+    [SerializeField] private TextMeshProUGUI liftProfitabilityText;
     [SerializeField] private TextMeshProUGUI liftWearResistanceText;
     [SerializeField] private TextMeshProUGUI liftReliabilityText;
     [SerializeField] private TextMeshProUGUI liftConvenienceText;
-    [SerializeField] private TextMeshProUGUI liftCollectText;
-    [SerializeField] private TextMeshProUGUI liftPriceTextInfo;
 
     [SerializeField] private GameObject Bts;
     [SerializeField] private GameObject BtBuy;
@@ -35,25 +34,31 @@ public class HouseManager : MonoBehaviour
 
         DisplayHouseInfo();
         panel.SetActive(true);
+        Controller.SetActive(false);
     }
 
 
     public void DisplayHouseInfo()
     {
-        liftPriceText.text = currentHouse.liftIsOwned ? currentHouse.currentCoins.ToString() : currentHouse.liftPrice.ToString();
-        liftPriceTextInfo.text = currentHouse.liftPrice.ToString();
+        for (int i = 0; i < liftNameText.Length; i++)
+            liftNameText[i].text = currentHouse.liftName;
+
         liftText.text = currentHouse.liftIsOwned ? "Собрать" : "Купить";
-        liftNameText.text = currentHouse.liftName;
-        liftNameText1.text = currentHouse.liftName;
-        liftPriceText1.text = currentHouse.liftCointReturn.ToString();
+
+        for (int i = 0; i < liftNameText.Length; i++)
+            liftPriceText[i].text = currentHouse.liftIsOwned ? currentHouse.currentCoins.ToString() : currentHouse.liftPrice.ToString();
+
+        currentHouse.displayCurrentCountCoins = liftPriceText;
+
+        // Lift info
+
+        liftProfitabilityText.text = currentHouse.liftCointReturn.ToString();
         liftWearResistanceText.text = currentHouse.WearResistance.ToString();
         liftConvenienceText.text = currentHouse.Convenience.ToString();
         liftReliabilityText.text = currentHouse.Reliability.ToString();
 
-        currentHouse.panelTextCurrCoints = liftCollectText;
-
-        Bts.SetActive(currentHouse.liftIsOwned ? false : true);
-        BtBuy.SetActive(currentHouse.liftIsOwned ? true : false);
+        Bts.SetActive(currentHouse.liftIsOwned ? true : false);
+        BtBuy.SetActive(currentHouse.liftIsOwned ? false : true);
     }
 
     public void OpenLift()

@@ -13,10 +13,14 @@ public class OrbitZoomPanCamera : MonoBehaviour
     private Vector2 deltaMouseMovement;
     private Vector3 originPosition;
 
+    private float currentOrbitSpeed;
+    public bool IsMoving { get; private set; }
+
     void Awake()
     {
         cameraComponent = Camera.main;
         lastMousePosition = Input.mousePosition;
+        currentOrbitSpeed = orbitSpeed;
         CalculateOrigin();
     }
 
@@ -41,8 +45,8 @@ public class OrbitZoomPanCamera : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            transform.RotateAround(originPosition, Vector3.up, deltaMouseMovement.x * orbitSpeed * Time.deltaTime);
-            transform.RotateAround(originPosition, transform.right, -deltaMouseMovement.y * orbitSpeed * Time.deltaTime);
+            cameraComponent.transform.RotateAround(originPosition, Vector3.up, deltaMouseMovement.x * currentOrbitSpeed * Time.deltaTime);
+            cameraComponent.transform.RotateAround(originPosition, cameraComponent.transform.right, -deltaMouseMovement.y * currentOrbitSpeed * Time.deltaTime);
         }
         else if (Input.GetMouseButton(1))
         {
@@ -50,15 +54,18 @@ public class OrbitZoomPanCamera : MonoBehaviour
 
             if (originReference != null)
             {
-                Vector3 direction = (originPosition - transform.position).normalized;
-                transform.Translate(direction * zoomAmount, Space.World);
+                Vector3 direction = (originPosition - cameraComponent.transform.position).normalized;
+                cameraComponent.transform.Translate(direction * zoomAmount, Space.World);
             }
             else
             {
-                transform.Translate(Vector3.back * zoomAmount);
+                cameraComponent.transform.Translate(Vector3.back * zoomAmount);
                 originDistance -= zoomAmount;
             }
         }
+
+        bool isMouseMoving = (Input.GetMouseButton(0) || Input.GetMouseButton(1)) && deltaMouseMovement.magnitude > 0.1f;
+        IsMoving = isMouseMoving;
     }
 
     void HandleTouchInput()
@@ -78,7 +85,20 @@ public class OrbitZoomPanCamera : MonoBehaviour
 
                 float zoomModifier = (currentDistance - prevDistance) * zoomSpeed * Time.deltaTime;
                 cameraComponent.fieldOfView = Mathf.Clamp(cameraComponent.fieldOfView - zoomModifier, 20f, 100f);
+
+                currentOrbitSpeed = 0.5f;
+                IsMoving = true;
             }
+            else
+            {
+                currentOrbitSpeed = orbitSpeed;
+                IsMoving = false;
+            }
+        }
+        else
+        {
+            currentOrbitSpeed = orbitSpeed;
+            IsMoving = false;
         }
     }
 
