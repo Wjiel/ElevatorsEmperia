@@ -9,84 +9,100 @@ public class HouseManager : MonoBehaviour
     [SerializeField] private GameObject panel;
 
     [SerializeField] private GameObject panelInfo;
-    [Header("House info")]
+    [SerializeField] private GameObject panelLifts;
 
-    [SerializeField] private TextMeshProUGUI[] liftPriceText;
-
-    [SerializeField] private TextMeshProUGUI liftText;
-
-    [SerializeField] private TextMeshProUGUI[] liftNameText;
 
     [Header("Lift info")]
+    [SerializeField] private TextMeshProUGUI liftName;
     [SerializeField] private TextMeshProUGUI liftProfitabilityText;
     [SerializeField] private TextMeshProUGUI liftWearResistanceText;
     [SerializeField] private TextMeshProUGUI liftReliabilityText;
     [SerializeField] private TextMeshProUGUI liftConvenienceText;
 
-    [SerializeField] private GameObject Bts;
+    [SerializeField] private TextMeshProUGUI liftPrice;
+
     [SerializeField] private GameObject BtBuy;
+    [SerializeField] private GameObject Bts;
+
+    [SerializeField] private TextMeshProUGUI collectCountReturn;
 
     private House currentHouse;
+    private ElevatorData[] currentLifts;
+    private ElevatorData currentLift;
 
-    public void toInteractHouse(House house)
+    public Elevator elevatorUIPrefab;
+    public Transform elevatorListContainer;
+
+
+    public void toInteractHouse(ElevatorData[] elevators, House house)
     {
+        if(currentLift != null)
+            currentLift.CurrentCoinsChanged -= UpdatePriceDisplay;
+
+        currentLifts = elevators;
         currentHouse = house;
 
-        DisplayHouseInfo();
+        foreach (Transform child in elevatorListContainer)
+            Destroy(child.gameObject);
+
+        foreach (var elevator in elevators)
+        {
+            Elevator uiElement = Instantiate(elevatorUIPrefab, elevatorListContainer);
+            uiElement.Setup(elevator, moneyManager, this);
+        }
+
         panel.SetActive(true);
+        panelLifts.SetActive(true);
         Controller.SetActive(false);
     }
 
 
     public void DisplayHouseInfo()
     {
-        for (int i = 0; i < liftNameText.Length; i++)
-            liftNameText[i].text = currentHouse.liftName;
+        liftName.text = currentLift.liftName;
 
-        liftText.text = currentHouse.liftIsOwned ? "Собрать" : "Купить";
+        liftProfitabilityText.text = currentLift.cointReturn.ToString() + "/мин";
+        liftWearResistanceText.text = currentLift.WearResistance.ToString() + "%";
+        liftConvenienceText.text = currentLift.Convenience.ToString() + "%";
+        liftReliabilityText.text = currentLift.Reliability.ToString() + "%";
 
-        for (int i = 0; i < liftNameText.Length; i++)
-            liftPriceText[i].text = currentHouse.liftIsOwned ? currentHouse.currentCoins.ToString() : currentHouse.liftPrice.ToString();
+        liftPrice.text = currentLift.price.ToString();
 
-        currentHouse.displayCurrentCountCoins = liftPriceText;
+        Bts.SetActive(currentLift.liftIsOwned ? true : false);
+        BtBuy.SetActive(currentLift.liftIsOwned ? false : true);
 
-        // Lift info
-
-        liftProfitabilityText.text = currentHouse.liftCointReturn.ToString();
-        liftWearResistanceText.text = currentHouse.WearResistance.ToString();
-        liftConvenienceText.text = currentHouse.Convenience.ToString();
-        liftReliabilityText.text = currentHouse.Reliability.ToString();
-
-        Bts.SetActive(currentHouse.liftIsOwned ? true : false);
-        BtBuy.SetActive(currentHouse.liftIsOwned ? false : true);
+        collectCountReturn.text = currentLift.currentCoins.ToString();
     }
 
-    public void OpenLift()
+    public void OpenLift(ElevatorData currLift)
     {
-        if (currentHouse.liftIsOwned)
-        {
-            currentHouse.CollectCoins();
-            return;
-        }
+        if (currentLift != null)
+            currentLift.CurrentCoinsChanged -= UpdatePriceDisplay;
+
+        currentLift = currLift;
 
         panelInfo.SetActive(true);
+        DisplayHouseInfo();
+
+        panelLifts.SetActive(false);
+
+        currentLift.CurrentCoinsChanged += UpdatePriceDisplay;
     }
-    public void BuyHouse(int index)
+    public void BuyHouse()
     {
-        if (currentHouse.liftIsOwned)
+        if (PlayerPrefs.GetInt("PlayerMoney", 0) >= currentLift.price)
         {
-            currentHouse.CollectCoins();
-            return;
-        }
-
-        if (PlayerPrefs.GetInt("PlayerMoney", 0) >= currentHouse.liftPrice)
-        {
-            moneyManager.ModifyCoins(-currentHouse.liftPrice);
-            currentHouse.liftIsOwned = true;
+            moneyManager.ModifyCoins(-currentLift.price);
+            currentLift.liftIsOwned = true;
             DisplayHouseInfo();
-            currentHouse.IsOwning();
+            currentHouse.startAddMoney();
         }
-
     }
+
+    private void UpdatePriceDisplay(int newAmount)
+    {
+        collectCountReturn.text = newAmount.ToString();
+    }
+
 }
 
