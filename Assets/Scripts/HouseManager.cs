@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +12,11 @@ public class HouseManager : MonoBehaviour
     [SerializeField] private GameObject panelInfo;
     [SerializeField] private GameObject panelLifts;
 
+    [Header("House info")]
+    [SerializeField] private TextMeshProUGUI nameDisplay;
+    [SerializeField] private TextMeshProUGUI countDisplay;
+
+    private string _nameHouse;
 
     [Header("Lift info")]
     [SerializeField] private TextMeshProUGUI liftName;
@@ -33,10 +39,9 @@ public class HouseManager : MonoBehaviour
     public Elevator elevatorUIPrefab;
     public Transform elevatorListContainer;
 
-
-    public void toInteractHouse(ElevatorData[] elevators, House house)
+    public void toInteractHouse(ElevatorData[] elevators, House house, string nameHouse)
     {
-        if(currentLift != null)
+        if (currentLift != null)
             currentLift.CurrentCoinsChanged -= UpdatePriceDisplay;
 
         currentLifts = elevators;
@@ -51,9 +56,27 @@ public class HouseManager : MonoBehaviour
             uiElement.Setup(elevator, moneyManager, this);
         }
 
+        _nameHouse = nameHouse;
+
+        display(_nameHouse);
+
         panel.SetActive(true);
         panelLifts.SetActive(true);
         Controller.SetActive(false);
+    }
+    private void display(string nameHouse)
+    {
+        nameDisplay.text = nameHouse;
+
+        int countBuyedElevators = 0;
+        for (int i = 0; i < currentLifts.Length; i++)
+        {
+            if (currentLifts[i].liftIsOwned)
+            {
+                countBuyedElevators++;
+            }
+        }
+        countDisplay.text = $"{countBuyedElevators}/{currentLifts.Length}";
     }
 
 
@@ -70,6 +93,8 @@ public class HouseManager : MonoBehaviour
 
         Bts.SetActive(currentLift.liftIsOwned ? true : false);
         BtBuy.SetActive(currentLift.liftIsOwned ? false : true);
+
+        display(_nameHouse);
 
         collectCountReturn.text = currentLift.currentCoins.ToString();
     }
@@ -97,6 +122,13 @@ public class HouseManager : MonoBehaviour
             DisplayHouseInfo();
             currentHouse.startAddMoney();
         }
+    }
+
+    public void CollectCoins()
+    {
+        moneyManager.ModifyCoins(currentLift.currentCoins);
+
+        currentLift.currentCoins = 0;
     }
 
     private void UpdatePriceDisplay(int newAmount)
