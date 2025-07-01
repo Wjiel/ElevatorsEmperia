@@ -1,8 +1,5 @@
-using System.Collections;
 using TMPro;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
-using static UnityEngine.Analytics.IAnalytic;
 
 public class Elevator : MonoBehaviour
 {
@@ -45,6 +42,8 @@ public class Elevator : MonoBehaviour
             elevator.currentCoins = 0;
 
             priceDisplay.text = "0";
+
+            houseManager.toReturnCoins();
         }
         else
         {

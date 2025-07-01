@@ -16,12 +16,19 @@ public class OrbitZoomPanCamera : MonoBehaviour
     private float currentOrbitSpeed;
     public bool IsMoving { get; private set; }
 
+    private float yaw = 0f;
+    private float pitch = 0f;
+    private const float minPitch = -80f; 
+    private const float maxPitch = 80f;  
+
     void Awake()
     {
         cameraComponent = Camera.main;
         lastMousePosition = Input.mousePosition;
         currentOrbitSpeed = orbitSpeed;
         CalculateOrigin();
+
+        UpdateAnglesFromCurrentPosition();
     }
 
     void Update()
@@ -45,23 +52,24 @@ public class OrbitZoomPanCamera : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            cameraComponent.transform.RotateAround(originPosition, Vector3.up, deltaMouseMovement.x * currentOrbitSpeed * Time.deltaTime);
-            cameraComponent.transform.RotateAround(originPosition, cameraComponent.transform.right, -deltaMouseMovement.y * currentOrbitSpeed * Time.deltaTime);
-        }
-        else if (Input.GetMouseButton(1))
-        {
-            float zoomAmount = deltaMouseMovement.y * zoomSpeed * Time.deltaTime;
+            // Обновляем углы
+            yaw += deltaMouseMovement.x * currentOrbitSpeed * Time.deltaTime;
+            pitch += deltaMouseMovement.y * currentOrbitSpeed * Time.deltaTime;
+            pitch = Mathf.Clamp(pitch, minPitch, maxPitch); 
 
-            if (originReference != null)
-            {
-                Vector3 direction = (originPosition - cameraComponent.transform.position).normalized;
-                cameraComponent.transform.Translate(direction * zoomAmount, Space.World);
-            }
-            else
-            {
-                cameraComponent.transform.Translate(Vector3.back * zoomAmount);
-                originDistance -= zoomAmount;
-            }
+            float radPitch = pitch * Mathf.Deg2Rad;
+            float radYaw = yaw * Mathf.Deg2Rad;
+
+            Vector3 direction = new Vector3(
+                Mathf.Sin(radYaw) * Mathf.Cos(radPitch),
+                Mathf.Sin(radPitch),
+                Mathf.Cos(radYaw) * Mathf.Cos(radPitch)
+            );
+
+            Vector3 newPosition = originPosition - direction * originDistance;
+
+            cameraComponent.transform.position = newPosition;
+            cameraComponent.transform.LookAt(originPosition);
         }
 
         bool isMouseMoving = (Input.GetMouseButton(0) || Input.GetMouseButton(1)) && deltaMouseMovement.magnitude > 0.1f;
@@ -104,21 +112,17 @@ public class OrbitZoomPanCamera : MonoBehaviour
 
     void CalculateOrigin()
     {
-        if (originReference != null)
-        {
-            originPosition = originReference.position;
-            originDistance = Vector3.Distance(transform.position, originPosition);
-        }
-        else
-        {
-            originPosition = transform.position + transform.forward * originDistance;
-        }
+        originPosition = originReference.position;
+
+        originDistance = Vector3.Distance(cameraComponent.transform.position, originPosition);
     }
 
-    void OnDrawGizmos()
+    void UpdateAnglesFromCurrentPosition()
     {
-        CalculateOrigin();
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, originPosition);
+        Vector3 direction = originPosition - cameraComponent.transform.position;
+        direction.Normalize();
+
+        yaw = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        pitch = Mathf.Asin(direction.y) * Mathf.Rad2Deg;
     }
 }

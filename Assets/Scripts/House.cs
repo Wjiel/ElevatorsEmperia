@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class House : MonoBehaviour, IInteractable
@@ -10,8 +11,22 @@ public class House : MonoBehaviour, IInteractable
 
     [SerializeField] private GameObject displayCurrentCoins;
 
+    [SerializeField] private TextMeshProUGUI countReturnDisplay;
+    [SerializeField] private GameObject countReturnOblaco;
+
     public string buildingName = "ул. Макарова 12";
     public ElevatorData[] elevators;
+
+    private void Start()
+    {
+        foreach (var elevator in elevators)
+        {
+            if (elevator.liftIsOwned)
+            {
+                StartCoroutine(AddCurrencyCoroutine(elevator));
+            }
+        }
+    }
     public void startAddMoney()
     {
         StopAllCoroutines();
@@ -42,6 +57,8 @@ public class House : MonoBehaviour, IInteractable
         {
             elevator.currentCoins += elevator.cointReturn;
 
+
+
             //if (!displayCurrentCoins.activeInHierarchy)
             //{
             //    displayCurrentCoins.SetActive(true);
@@ -50,6 +67,8 @@ public class House : MonoBehaviour, IInteractable
             //    displayCurrentCoins.transform.DOScale(1, 0.2f)
             //        .SetEase(Ease.InBounce);
             //}
+            DisplayCurrentCoint();
+
 
             yield return new WaitForSeconds(elevator.interval);
         }
@@ -62,7 +81,30 @@ public class House : MonoBehaviour, IInteractable
             elevators[i].currentCoins = 0;
         }
 
-     //   displayCurrentCoins.SetActive(false);
+
+
+        DisplayCurrentCoint();
+    }
+
+    public void DisplayCurrentCoint()
+    {
+        int allCoins = 0;
+
+
+        for (int i = 0; i < elevators.Length; i++)
+        {
+            allCoins += elevators[i].currentCoins;
+        }
+
+        if (allCoins != 0)
+            countReturnOblaco.SetActive(true);
+        else
+            countReturnOblaco.SetActive(false);
+
+        if (allCoins >= 1000)
+            allCoins = 999;
+
+        countReturnDisplay.text = allCoins.ToString();
     }
 }
 

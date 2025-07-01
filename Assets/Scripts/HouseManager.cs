@@ -79,6 +79,11 @@ public class HouseManager : MonoBehaviour
         countDisplay.text = $"{countBuyedElevators}/{currentLifts.Length}";
     }
 
+    public void toReturnCoins()
+    {
+        if (currentHouse != null)
+            currentHouse.DisplayCurrentCoint();
+    }
 
     public void DisplayHouseInfo()
     {

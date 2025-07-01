@@ -29,7 +29,7 @@ public class RotateTo : MonoBehaviour
 
         if (directionToCamera.sqrMagnitude > 0.0001f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(directionToCamera, Vector3.up);
+            Quaternion targetRotation = Quaternion.LookRotation(-directionToCamera, Vector3.up);
 
             thisTransform.rotation = Quaternion.Slerp(thisTransform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
