@@ -23,7 +23,7 @@ public class Elevator : MonoBehaviour
         houseManager = _houseManager;
 
         nameDisplay.text = data.liftName;
-        levelDisplay.text = $"{data.level}";
+        levelDisplay.text = $"{data.level + 1} уровень";
     }
     private void UpdatePriceDisplay(int newAmount)
     {
@@ -54,9 +54,10 @@ public class Elevator : MonoBehaviour
 
     void UpdateButtonState()
     {
-        priceLabelDisplay.text = elevator.liftIsOwned ? "Забрать" : "Купить";
+        priceLabelDisplay.text = elevator.liftIsOwned ? "Собрать" : "Купить";
         priceDisplay.text = elevator.liftIsOwned ? elevator.currentCoins.ToString() : elevator.price.ToString();
 
         elevator.CurrentCoinsChanged += UpdatePriceDisplay;
+        levelDisplay.text = $"{elevator.level + 1} уровень";
     }
 }

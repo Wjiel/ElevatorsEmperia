@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HouseManager : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class HouseManager : MonoBehaviour
     [SerializeField] private GameObject Bts;
 
     [SerializeField] private TextMeshProUGUI collectCountReturn;
+    [SerializeField] private TextMeshProUGUI upgradeLiftCost;
+
+    public Image[] objectsCountReturn;
 
     private House currentHouse;
     private ElevatorData[] currentLifts;
@@ -89,6 +93,16 @@ public class HouseManager : MonoBehaviour
     {
         liftName.text = currentLift.liftName;
 
+        currentLift.level = currentLift.levels[currentLift.level].level;
+
+        if (currentLift.levels[currentLift.level].cointReturn != 0)
+            currentLift.cointReturn = currentLift.levels[currentLift.level].cointReturn;
+
+        currentLift.WearResistance = currentLift.levels[currentLift.level].WearResistance;
+        currentLift.Reliability = currentLift.levels[currentLift.level].Reliability;
+        currentLift.Convenience = currentLift.levels[currentLift.level].Convenience;
+
+
         liftProfitabilityText.text = currentLift.cointReturn.ToString() + "/мин";
         liftWearResistanceText.text = currentLift.WearResistance.ToString() + "%";
         liftConvenienceText.text = currentLift.Convenience.ToString() + "%";
@@ -102,6 +116,25 @@ public class HouseManager : MonoBehaviour
         display(_nameHouse);
 
         collectCountReturn.text = currentLift.currentCoins.ToString();
+
+        if (currentLift.level < currentLift.levels.Length - 1)
+            upgradeLiftCost.text = currentLift.levels[currentLift.level + 1].price.ToString();
+
+
+        for (int i = 0; i < objectsCountReturn.Length; i++)
+        {
+            if (i > currentLift.level)
+                return;
+
+            if (currentLift.levels[i].cointReturn != 0)
+            {
+                objectsCountReturn[i].color = Color.green;
+            }
+            else
+            {
+                objectsCountReturn[i].color = Color.white;
+            }
+        }
     }
 
     public void OpenLift(ElevatorData currLift)
@@ -122,11 +155,30 @@ public class HouseManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("PlayerMoney", 0) >= currentLift.price)
         {
-            moneyManager.ModifyCoins(-currentLift.price);
+            moneyManager.DiscreCoins(currentLift.price);
             currentLift.liftIsOwned = true;
             DisplayHouseInfo();
             currentHouse.startAddMoney();
         }
+    }
+
+    public void UpgradeLevel()
+    {
+        if (currentLift.level < currentLift.levels.Length - 1)
+            if (PlayerPrefs.GetInt("PlayerMoney", 0) >= currentLift.levels[currentLift.level + 1].price)
+            {
+                moneyManager.DiscreCoins(currentLift.levels[currentLift.level + 1].price);
+
+                if (currentLift.levels[currentLift.level + 1].cointReturn != 0)
+                    currentLift.cointReturn = currentLift.levels[currentLift.level + 1].cointReturn;
+                currentLift.WearResistance = currentLift.levels[currentLift.level + 1].WearResistance;
+                currentLift.Reliability = currentLift.levels[currentLift.level + 1].Reliability;
+                currentLift.Convenience = currentLift.levels[currentLift.level + 1].Convenience;
+
+                currentLift.level = currentLift.levels[currentLift.level + 1].level;
+                DisplayHouseInfo();
+                currentHouse.startAddMoney();
+            }
     }
 
     public void CollectCoins()

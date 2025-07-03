@@ -24,6 +24,13 @@ public class MoneyManager : MonoBehaviour
         SaveCurrency();
     }
 
+    public void DiscreCoins(int amount)
+    {
+        currentMoney -= amount;
+        UpdateCurrencyUI();
+        SaveCurrency();
+    }
+
     private void SaveCurrency()
     {
         PlayerPrefs.SetInt("PlayerMoney", currentMoney);

@@ -127,16 +127,30 @@ public class ElevatorData
         }
     }
 
-    public int price;
+    public ElevatorLevelData[] levels;
+
+    [HideInInspector] public int price;
     public int level;
-    public int cointReturn;
+    [HideInInspector] public int cointReturn;
     public bool liftIsOwned;
 
     public string liftName = "OTIS";
-    public int WearResistance = 15;
-    public int Reliability = 5;
-    public int Convenience = 60;
+    [HideInInspector] public int WearResistance = 15;
+    [HideInInspector] public int Reliability = 5;
+    [HideInInspector] public int Convenience = 60;
 
 
     public float interval = 15f;
+}
+
+
+[Serializable]
+public class ElevatorLevelData
+{
+    public int level;
+    public int price;
+    public int cointReturn;
+    public int WearResistance = 15;
+    public int Reliability = 5;
+    public int Convenience = 60;
 }
